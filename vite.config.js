@@ -9,3 +9,5 @@ export default defineConfig({
         }),
     ],
 });
+// npm install -D tailwind postcss autoprefixer
+// npx tailwind init -p

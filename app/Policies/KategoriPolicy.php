@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\Anggota;
+use App\Models\Kategori;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class AnggotaPolicy
+class KategoriPolicy
 {
     use HandlesAuthorization;
 
@@ -25,10 +25,10 @@ class AnggotaPolicy
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Anggota  $anggota
+     * @param  \App\Models\Kategori  $kategori
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function view(User $user, Anggota $anggota)
+    public function view(User $user, Kategori $kategori)
     {
         //
     }
@@ -48,10 +48,10 @@ class AnggotaPolicy
      * Determine whether the user can update the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Anggota  $anggota
+     * @param  \App\Models\Kategori  $kategori
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function update(User $user, Anggota $anggota)
+    public function update(User $user, Kategori $kategori)
     {
         //
     }
@@ -60,10 +60,10 @@ class AnggotaPolicy
      * Determine whether the user can delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Anggota  $anggota
+     * @param  \App\Models\Kategori  $kategori
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function delete(User $user, Anggota $anggota)
+    public function delete(User $user, Kategori $kategori)
     {
         //
     }
@@ -72,10 +72,10 @@ class AnggotaPolicy
      * Determine whether the user can restore the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Anggota  $anggota
+     * @param  \App\Models\Kategori  $kategori
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function restore(User $user, Anggota $anggota)
+    public function restore(User $user, Kategori $kategori)
     {
         //
     }
@@ -84,10 +84,10 @@ class AnggotaPolicy
      * Determine whether the user can permanently delete the model.
      *
      * @param  \App\Models\User  $user
-     * @param  \App\Models\Anggota  $anggota
+     * @param  \App\Models\Kategori  $kategori
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function forceDelete(User $user, Anggota $anggota)
+    public function forceDelete(User $user, Kategori $kategori)
     {
         //
     }

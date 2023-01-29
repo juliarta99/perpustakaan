@@ -17,8 +17,7 @@ return new class extends Migration
             $table->id();
             $table->date('tanggal');
             $table->foreignId('id_buku');
-            $table->foreignId('id_petugas');
-            $table->foreignId('id_anggota');
+            $table->foreignId('id_user');
             $table->timestamps();
         });
     }

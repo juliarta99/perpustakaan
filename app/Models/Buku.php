@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Rak;
+use App\Models\Kategori;
 use App\Models\Pengembalian;
 use App\Models\Peminjaman;
 
@@ -12,9 +12,11 @@ class Buku extends Model
 {
     use HasFactory;
 
-    public function rak()
+    protected $guarded = ['id'];
+
+    public function kategori()
     {
-        return $this->belongsTo(Rak::class, 'id_rak');
+        return $this->belongsTo(Kategori::class, 'id_kategori');
     }
 
     public function peminjaman()

@@ -16,11 +16,10 @@ return new class extends Migration
         Schema::create('pengembalians', function (Blueprint $table) {
             $table->id();
             $table->date('tanggal');
-            $table->string('sanksi');
+            $table->foreignId('id_sanksi');
             $table->integer('denda');
             $table->foreignId('id_buku');
-            $table->foreignId('id_petugas');
-            $table->foreignId('id_anggota');
+            $table->foreignId('id_user');
             $table->timestamps();
         });
     }

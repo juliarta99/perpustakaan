@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Anggota;
-use App\Http\Requests\StoreAnggotaRequest;
-use App\Http\Requests\UpdateAnggotaRequest;
+use App\Models\Kategori;
+use App\Http\Requests\StoreKategoriRequest;
+use App\Http\Requests\UpdateKategoriRequest;
 
-class AnggotaController extends Controller
+class KategoriController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -31,10 +31,10 @@ class AnggotaController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreAnggotaRequest  $request
+     * @param  \App\Http\Requests\StoreKategoriRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreAnggotaRequest $request)
+    public function store(StoreKategoriRequest $request)
     {
         //
     }
@@ -42,10 +42,10 @@ class AnggotaController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Anggota  $anggota
+     * @param  \App\Models\Kategori  $kategori
      * @return \Illuminate\Http\Response
      */
-    public function show(Anggota $anggota)
+    public function show(Kategori $kategori)
     {
         //
     }
@@ -53,10 +53,10 @@ class AnggotaController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Anggota  $anggota
+     * @param  \App\Models\Kategori  $kategori
      * @return \Illuminate\Http\Response
      */
-    public function edit(Anggota $anggota)
+    public function edit(Kategori $kategori)
     {
         //
     }
@@ -64,11 +64,11 @@ class AnggotaController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateAnggotaRequest  $request
-     * @param  \App\Models\Anggota  $anggota
+     * @param  \App\Http\Requests\UpdateKategoriRequest  $request
+     * @param  \App\Models\Kategori  $kategori
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateAnggotaRequest $request, Anggota $anggota)
+    public function update(UpdateKategoriRequest $request, Kategori $kategori)
     {
         //
     }
@@ -76,10 +76,10 @@ class AnggotaController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Anggota  $anggota
+     * @param  \App\Models\Kategori  $kategori
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Anggota $anggota)
+    public function destroy(Kategori $kategori)
     {
         //
     }
