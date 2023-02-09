@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Sanksi extends Model
 {
     use HasFactory;
+
+    protected $quarded = ['id'];
+
+    public function pengembalians()
+    {
+        return $this->hasMany(Pengembalian::class, 'id_sanksi');
+    }
 }

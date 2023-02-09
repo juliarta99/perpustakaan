@@ -19,12 +19,12 @@ class Buku extends Model
         return $this->belongsTo(Kategori::class, 'id_kategori');
     }
 
-    public function peminjaman()
+    public function peminjamans()
     {
         return $this->hasMany(Peminjaman::class);
     }
 
-    public function pengembalian()
+    public function pengembalians()
     {
         return $this->hasMany(Pengembalian::class);
     }

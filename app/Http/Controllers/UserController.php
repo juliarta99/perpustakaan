@@ -30,7 +30,7 @@ class UserController extends Controller
             'kode' => 'required',
             'password' => 'required'
         ]);
-
+        
         if(Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
@@ -40,6 +40,14 @@ class UserController extends Controller
         return Redirect::back()->withErrors(['error' => 'Id Pengguna atau Password salah!']);
     }
 
+    public function all()
+    {
+        return view('dashboard.user.index',
+        [
+            'title' => 'Dashboard User',
+            'users' => User::all()
+        ]);
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -138,5 +146,14 @@ class UserController extends Controller
     {
         User::destroy('id', $user->id);
         return redirect('/dashboard/user')->with('succes', 'User berhasil dihapus');
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect('/');
     }
 }

@@ -26,4 +26,9 @@ class Pengembalian extends Model
     {
         return $this->belongsTo(User::class, 'id_user');
     }
+
+    public function petugas()
+    {
+        return $this->belongsTo(User::class, 'id_petugas');
+    }
 }

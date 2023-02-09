@@ -15,6 +15,13 @@ use App\Http\Controllers\UserController;
 |
 */
 
-Route::get('/', [HomeController::class, 'index']);
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
-Route::get('/login', [UserController::class, 'index'])->name('login');
+Route::get('/login', [UserController::class, 'index'])->middleware('guest')->name('login');
+Route::post('/login', [UserController::class, 'authenticate'])->middleware('guest')->name('login');
+
+Route::get('/dashboard/user/create', [UserController::class, 'create']);
+Route::post('/dashboard/user', [UserController::class, 'store']);
+Route::get('/dashboard/user', [UserController::class, 'all']);
+
+Route::get('/logout', [UserController::class, 'logout'])->name('logout');

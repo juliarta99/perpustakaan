@@ -20,6 +20,7 @@ return new class extends Migration
             $table->integer('denda');
             $table->foreignId('id_buku');
             $table->foreignId('id_user');
+            $table->foreignId('id_petugas');
             $table->timestamps();
         });
     }

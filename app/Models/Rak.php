@@ -10,7 +10,9 @@ class Rak extends Model
 {
     use HasFactory;
 
-    public function kategori()
+    protected $quarded = ['id'];
+
+    public function kategoris()
     {
      return $this->hasMany(Kategori::class);   
     }

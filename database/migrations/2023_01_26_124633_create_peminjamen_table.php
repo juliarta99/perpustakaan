@@ -13,11 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('peminjamen', function (Blueprint $table) {
+        Schema::create('peminjamans', function (Blueprint $table) {
             $table->id();
             $table->date('tanggal');
             $table->foreignId('id_buku');
             $table->foreignId('id_user');
+            $table->foreignId('id_petugas');
             $table->timestamps();
         });
     }
