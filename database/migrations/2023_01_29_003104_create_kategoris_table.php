@@ -15,10 +15,10 @@ return new class extends Migration
     {
         Schema::create('kategoris', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_rak');
-            $table->string('name');
-            $table->char('kode');
+            $table->string('name')->unique();
+            $table->char('kode')->unique();
             $table->integer('stok')->default(0);
+            $table->foreignId('id_rak');
             $table->timestamps();
         });
     }

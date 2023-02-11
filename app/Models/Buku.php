@@ -14,6 +14,13 @@ class Buku extends Model
 
     protected $guarded = ['id'];
 
+    public function scopeFilter($query, array $filters)
+    {
+        $query->when($filters['search'] ?? false, function($query, $search) {
+            return $query->where('judul', 'like', '%'. $search .'%');
+        });
+    }
+
     public function kategori()
     {
         return $this->belongsTo(Kategori::class, 'id_kategori');

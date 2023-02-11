@@ -15,12 +15,13 @@ return new class extends Migration
     {
         Schema::create('bukus', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('id_kategori');
-            $table->char('kode');
+            $table->char('kode')->unique();
             $table->string('judul');
             $table->string('penulis');
             $table->string('penerbit');
             $table->char('tahun');
+            $table->string('sampul')->nullable();
+            $table->foreignId('id_kategori');
             $table->timestamps();
         });
     }

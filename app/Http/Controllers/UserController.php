@@ -34,7 +34,11 @@ class UserController extends Controller
         if(Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            return redirect()->intended('/');
+            if(Auth::user()->is_petugas != 0) {
+                return redirect()->intended('/dashboard');
+            } else {
+                return redirect()->intended('/');
+            }
         }
 
         return Redirect::back()->withErrors(['error' => 'Id Pengguna atau Password salah!']);
@@ -75,7 +79,7 @@ class UserController extends Controller
             'jk' => 'required|max:1',
             'jabatan' => 'required',
             'no_telp' => 'required',
-            'email' => 'required|email',
+            'alamat' => 'required',
             'password' => ['required', Password::min(8)->numbers()->symbols() ],
         ]);
 

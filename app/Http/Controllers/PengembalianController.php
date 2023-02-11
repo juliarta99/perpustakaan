@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pengembalian;
-use App\Http\Requests\StorePengembalianRequest;
-use App\Http\Requests\UpdatePengembalianRequest;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 class PengembalianController extends Controller
 {
@@ -15,7 +15,11 @@ class PengembalianController extends Controller
      */
     public function index()
     {
-        //
+        return view('pengembalian', 
+        [
+            'title' => 'Pengembalian',
+            // 'pengembalians' => Pengembalian::latest()->where('id_anggota', Auth::user()->id)->get(),
+        ]);
     }
 
     /**
@@ -31,10 +35,10 @@ class PengembalianController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StorePengembalianRequest  $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StorePengembalianRequest $request)
+    public function store(Request $request)
     {
         //
     }
@@ -64,11 +68,11 @@ class PengembalianController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdatePengembalianRequest  $request
+     * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Pengembalian  $pengembalian
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdatePengembalianRequest $request, Pengembalian $pengembalian)
+    public function update(Request $request, Pengembalian $pengembalian)
     {
         //
     }

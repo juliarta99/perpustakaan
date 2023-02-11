@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Peminjaman;
-use App\Http\Requests\StorePeminjamanRequest;
-use App\Http\Requests\UpdatePeminjamanRequest;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
 
 class PeminjamanController extends Controller
 {
@@ -15,7 +15,11 @@ class PeminjamanController extends Controller
      */
     public function index()
     {
-        //
+        return view('peminjaman', 
+        [
+            'title' => 'Peminjaman',
+            // 'peminjamans' => Peminjaman::latest()->where('id_anggota', Auth::user()->id)->get(),
+        ]);
     }
 
     /**
@@ -31,10 +35,10 @@ class PeminjamanController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StorePeminjamanRequest  $request
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StorePeminjamanRequest $request)
+    public function store(Request $request)
     {
         //
     }
@@ -64,11 +68,11 @@ class PeminjamanController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdatePeminjamanRequest  $request
+     * @param  \Illuminate\Http\Request $request
      * @param  \App\Models\Peminjaman  $peminjaman
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdatePeminjamanRequest $request, Peminjaman $peminjaman)
+    public function update(Request $request, Peminjaman $peminjaman)
     {
         //
     }

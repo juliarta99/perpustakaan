@@ -27,8 +27,8 @@
             <label for="no_telp">Nomor HP</label>
             <input type="tel" name="no_telp" id="no_telp">
 
-            <label for="email">email</label>
-            <input type="email" name="email" id="email">
+            <label for="alamat">alamat</label>
+            <input type="alamat" name="alamat" id="alamat">
             
             <label for="password">Password</label>
             <input type="password" name="password" id="password">

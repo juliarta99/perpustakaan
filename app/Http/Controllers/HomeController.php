@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Buku;
 
 class HomeController extends Controller
 {
@@ -11,6 +12,7 @@ class HomeController extends Controller
         return view('welcome', 
         [
             'title' => 'Perpustakaan',
+            'bukus' => Buku::latest()->with('kategori')->filter(request(['search']))->paginate(4),
         ]);
     }
 }

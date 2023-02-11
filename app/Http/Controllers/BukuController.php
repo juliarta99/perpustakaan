@@ -3,8 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Buku;
-use App\Http\Requests\StoreBukuRequest;
-use App\Http\Requests\UpdateBukuRequest;
+use Illuminate\Http\Request;
 
 class BukuController extends Controller
 {
@@ -31,10 +30,10 @@ class BukuController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreBukuRequest  $request
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreBukuRequest $request)
+    public function store(Request $request)
     {
         //
     }
@@ -64,11 +63,11 @@ class BukuController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateBukuRequest  $request
+     * @param  \Illuminate\Http\Request $request
      * @param  \App\Models\Buku  $buku
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateBukuRequest $request, Buku $buku)
+    public function update(Request $request, Buku $buku)
     {
         //
     }

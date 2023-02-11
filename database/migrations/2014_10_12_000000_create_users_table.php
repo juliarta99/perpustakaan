@@ -20,8 +20,7 @@ return new class extends Migration
             $table->char('jk');
             $table->string('jabatan');
             $table->string('no_telp')->unique();
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
+            $table->string('alamat');
             $table->string('password');
             $table->boolean('is_petugas')->default(false);
             $table->boolean('is_admin')->default(false);
