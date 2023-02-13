@@ -49,7 +49,7 @@ class UserController extends Controller
         return view('dashboard.user.index',
         [
             'title' => 'Dashboard User',
-            'users' => User::all()
+            'users' => User::latest()->where('is_admin', 0)->paginate(8)
         ]);
     }
     /**
@@ -74,7 +74,7 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $validateData = $request->validate([
-            'kode' => 'required',
+            'kode' => 'required:unique:users',
             'name' => 'required|max:255',
             'jk' => 'required|max:1',
             'jabatan' => 'required',
@@ -86,7 +86,7 @@ class UserController extends Controller
         $validateData['password'] = Hash::make($request->password);
 
         User::create($validateData);
-        return redirect('/dashboard/user')->with('succes', 'User berhasil ditambahkan');
+        return redirect('/dashboard/user/all')->with('succes', 'User berhasil ditambahkan');
     }
 
     /**
@@ -99,7 +99,7 @@ class UserController extends Controller
     {
         return view('profile', 
         [
-            'title' => "'Profile ' . $user->name",
+            'title' => "Profile $user->name",
             'user' => $user,
         ]);
     }
@@ -112,9 +112,9 @@ class UserController extends Controller
      */
     public function edit(User $user)
     {
-        return view('dahboard.user.edit',
+        return view('dashboard.user.edit',
         [
-            'title' => "'Edit '. $user->name",
+            'title' => "Edit $user->name",
             'user' => $user,
         ]);
     }
@@ -133,11 +133,11 @@ class UserController extends Controller
             'jk' => 'required|max:1',
             'jabatan' => 'required',
             'no_telp' => 'required',
-            'email' => 'required',
+            'alamat' => 'required',
         ]);
 
         User::where('id', $user->id)->update($validateData);
-        return redirect('/dashboard/user')->with('succes', 'User berhasil diubah');
+        return redirect('/dashboard/user/all')->with('succes', 'User berhasil diubah');
     }
 
     /**
@@ -149,7 +149,7 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         User::destroy('id', $user->id);
-        return redirect('/dashboard/user')->with('succes', 'User berhasil dihapus');
+        return redirect('/dashboard/user/all')->with('succes', 'User berhasil dihapus');
     }
 
     public function logout(Request $request)

@@ -8,10 +8,10 @@
       @vite('resources/css/app.css')
 </head>
 <body>
-      <div class="w-full py-4 px-10 h-screen">
-            <div class="w-full flex items-center justify-center">
+      <div class="w-full px-10">
+            <div class="w-full h-screen flex items-center justify-center">
                   <div class="hidden lg:block lg:w-1/2">
-                        <img src="{{ asset('img/ilustrasi_login.png') }}" alt="">
+                        <img src="{{ asset('img/left_login.png') }}" alt="Left Login">
                   </div>
                   <div class="lg:w-1/2 w-full px-5">
                         <h1 class="text-md md:text-lg lg:text-xl xl:text-2xl uppercase font-semibold text-center">Login</h1>

@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Peminjaman;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 use Illuminate\Http\Request;
+use App\Models\Buku;
+use Carbon\Carbon;
 
 class PeminjamanController extends Controller
 {
@@ -18,7 +21,16 @@ class PeminjamanController extends Controller
         return view('peminjaman', 
         [
             'title' => 'Peminjaman',
-            // 'peminjamans' => Peminjaman::latest()->where('id_anggota', Auth::user()->id)->get(),
+            'peminjamans' => Peminjaman::latest()->where('id_user', Auth::user()->id)->get(),
+        ]);
+    }
+
+    public function all()
+    {
+        return view('dashboard.peminjaman.index',
+        [
+            'title' => 'All Peminjaman',
+            'peminjamans' => Peminjaman::latest()->with('anggota', 'buku', 'petugas')->paginate(8),
         ]);
     }
 
@@ -29,7 +41,12 @@ class PeminjamanController extends Controller
      */
     public function create()
     {
-        //
+        return view('dashboard.peminjaman.create',
+        [
+            'title' => 'Create Peminjaman',
+            'bukus' => Buku::all(),
+            'anggotas' => User::where('is_petugas', 0)->get()
+        ]);
     }
 
     /**
@@ -40,7 +57,32 @@ class PeminjamanController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validateData = $request->validate([
+            'id_buku' => 'required',
+            'id_user' => 'required'
+        ]);
+
+        $validateData['tanggal'] = Carbon::now()->toDateString();
+        $validateData['id_petugas'] = Auth::user()->id;
+
+        $cekUser = User::where('id', $request->id_user)->get();
+        if(count($cekUser) == 0) {
+            return redirect('dashboard/peminjaman/all')->with('error', 'Anggota tidak ditemukan');
+        };
+
+        $cekUserNotPetugas = User::where('id', $request->id_user)->where('is_petugas', true)->get();
+        if(count($cekUserNotPetugas) == 1){
+            return redirect('dashboard/peminjaman/all')->with('error', 'Anggota tidak valid');
+        };
+
+        $cekBuku = Peminjaman::where('id_buku', $request->id_buku)->get();
+        if(count($cekBuku) == 1) {
+            return redirect('dashboard/peminjaman/all')->with('error', 'Buku sudah dipinjam');
+        };
+
+        Peminjaman::create($validateData);
+        return redirect('dashboard/peminjaman/all')->with('succes', 'Peminjaman berhasil ditambahkan');
+
     }
 
     /**
@@ -62,7 +104,13 @@ class PeminjamanController extends Controller
      */
     public function edit(Peminjaman $peminjaman)
     {
-        //
+        return view('dashboard.peminjaman.edit',
+        [
+            'title' => 'Edit Peminjaman',
+            'peminjaman' => $peminjaman,
+            'bukus' => Buku::all(),
+            'anggotas' => User::where('is_petugas', 0)->get()
+        ]);
     }
 
     /**
@@ -74,7 +122,36 @@ class PeminjamanController extends Controller
      */
     public function update(Request $request, Peminjaman $peminjaman)
     {
-        //
+        $rules = [
+            'id_user' => 'required'
+        ];
+        
+        
+        $validateData = $request->validate($rules);
+        
+        if($request->id_buku != $peminjaman->buku->id) {
+            $validateData['id_buku'] = 'required';
+            $cekBuku = Peminjaman::where('id_buku', $request->id_buku)->get();
+            if(count($cekBuku) == 1) {
+                return redirect('dashboard/peminjaman/all')->with('error', 'Buku sudah dipinjam');
+            };
+        }
+
+        $validateData['tanggal'] = Carbon::now()->toDateString();
+        $validateData['id_petugas'] = Auth::user()->id;
+
+        $cekUser = User::where('id', $request->id_user)->get();
+        if(count($cekUser) == 0) {
+            return redirect('dashboard/peminjaman/all')->with('error', 'Anggota tidak ditemukan');
+        };
+
+        $cekUserNotPetugas = User::where('id', $request->id_user)->where('is_petugas', true)->get();
+        if(count($cekUserNotPetugas) == 1){
+            return redirect('dashboard/peminjaman/all')->with('error', 'Anggota tidak valid');
+        };
+
+        Peminjaman::where('id', $peminjaman->id)->update($validateData);
+        return redirect('/dashboard/peminjaman/all')->with('succes', 'Peminjaman berhasil diedit');
     }
 
     /**
@@ -85,6 +162,7 @@ class PeminjamanController extends Controller
      */
     public function destroy(Peminjaman $peminjaman)
     {
-        //
+        Peminjaman::destroy('id', $peminjaman->id);
+        return redirect('/dashboard/peminjaman/all')->with('succes', 'Peminjaman berhasil dihapus');
     }
 }

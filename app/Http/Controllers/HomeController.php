@@ -13,6 +13,7 @@ class HomeController extends Controller
         [
             'title' => 'Perpustakaan',
             'bukus' => Buku::latest()->with('kategori')->filter(request(['search']))->paginate(4),
+            'allBuku' => Buku::all(),
         ]);
     }
 }

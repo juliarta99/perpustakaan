@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pengembalian;
+use App\Models\Peminjaman;
+use App\Models\Sanksi;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
@@ -18,7 +21,16 @@ class PengembalianController extends Controller
         return view('pengembalian', 
         [
             'title' => 'Pengembalian',
-            // 'pengembalians' => Pengembalian::latest()->where('id_anggota', Auth::user()->id)->get(),
+            'peminjamans' => Peminjaman::latest()->where('id_user', Auth::user()->id)->get(),
+        ]);
+    }
+
+    public function all()
+    {
+        return view('dashboard.pengembalian.index',
+        [
+            'title' => 'All Pengembalian',
+            'pengembalians' => Pengembalian::latest()->with('peminjaman', 'petugas')->paginate(8),
         ]);
     }
 
@@ -29,7 +41,12 @@ class PengembalianController extends Controller
      */
     public function create()
     {
-        //
+        return view('dashboard.pengembalian.create',
+        [
+            'title' => 'Create Pengembalian',
+            'sanksis' => Sanksi::all(),
+            'peminjamans' => Peminjaman::all()
+        ]);
     }
 
     /**
@@ -40,7 +57,25 @@ class PengembalianController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validateData = $request->validate([
+            'id_peminjaman' => 'required|unique:pengembalians',
+            'id_sanksi' => 'nullable'
+        ]);
+
+        $validateData['id_petugas'] = Auth::user()->id;
+
+        $cekPeminjaman = Peminjaman::where('id', $request->id_peminjaman)->get();
+        if(count($cekPeminjaman) == 0) {
+            return redirect('dashboard/pengembalian/all')->with('error', 'Peminjaman tidak ditemukan');
+        }
+        
+        $cekSanksi = Sanksi::where('id', $request->id_sanksi)->get();
+        if(count($cekSanksi) == 0) {
+            return redirect('dashboard/pengembalian/all')->with('error', 'Sanksi tidak valid');
+        }
+
+        Pengembalian::create($validateData);
+        return redirect('/dashboard/pengembalian/all')->with('succes', 'Buku berhasil dikembalikan');
     }
 
     /**
@@ -62,7 +97,13 @@ class PengembalianController extends Controller
      */
     public function edit(Pengembalian $pengembalian)
     {
-        //
+        return view('dashboard.pengembalian.edit',
+        [
+            'title' => "Edit Pengembalian",
+            'pengembalian' => $pengembalian,
+            'peminjamans' => Peminjaman::all(),
+            'sanksis' => Sanksi::all()
+        ]);
     }
 
     /**
@@ -74,9 +115,34 @@ class PengembalianController extends Controller
      */
     public function update(Request $request, Pengembalian $pengembalian)
     {
-        //
-    }
+        $rules = [
+            'id_sanksi' => 'nullable'
+        ];
 
+        if($request->id_peminjaman != $pengembalian->peminjaman->id) {
+            $rules['id_peminjaman'] ='required|unique:pengembalians';
+        }
+
+        $validateData = $request->validate($rules);
+
+        $validateData['tanggal'] = Carbon::now()->toDateString();
+        $validateData['id_petugas'] = Auth::user()->id;
+
+
+        $cekPeminjaman = Peminjaman::where('id', $request->id_peminjaman)->get();
+        if(count($cekPeminjaman) == 0) {
+            return redirect('dashboard/pengembalian/all')->with('error', 'Peminjaman tidak ditemukan');
+        }
+        
+        $cekSanksi = Sanksi::where('id', $request->id_sanksi)->get();
+        if(count($cekSanksi) == 0) {
+            return redirect('dashboard/pengembalian/all')->with('error', 'Sanksi tidak valid');
+        }
+
+        Pengembalian::where('id', $pengembalian->id)->update($validateData);
+        return redirect('/dashboard/pengembalian/all')->with('succes', 'Pengembalian berhasil diedit');
+    }
+    
     /**
      * Remove the specified resource from storage.
      *
@@ -85,6 +151,7 @@ class PengembalianController extends Controller
      */
     public function destroy(Pengembalian $pengembalian)
     {
-        //
+        Pengembalian::destroy('id', $pengembalian->id);
+        return redirect('/dashboard/pengembalian/all')->with('succes', 'Pengembalian berhasil dihapus');
     }
 }

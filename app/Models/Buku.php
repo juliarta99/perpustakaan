@@ -17,7 +17,7 @@ class Buku extends Model
     public function scopeFilter($query, array $filters)
     {
         $query->when($filters['search'] ?? false, function($query, $search) {
-            return $query->where('judul', 'like', '%'. $search .'%');
+            return $query->where('judul', 'like', '%'. $search .'%')->orWhere('kode', 'like', '%'. $search .'%')->orWhere('penulis', 'like', '%'. $search .'%');
         });
     }
 
