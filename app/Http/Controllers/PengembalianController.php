@@ -6,6 +6,8 @@ use App\Models\Pengembalian;
 use App\Models\Peminjaman;
 use App\Models\Sanksi;
 use Carbon\Carbon;
+use App\Models\Buku;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
@@ -21,7 +23,7 @@ class PengembalianController extends Controller
         return view('pengembalian', 
         [
             'title' => 'Pengembalian',
-            'peminjamans' => Peminjaman::latest()->where('id_user', Auth::user()->id)->get(),
+            'pengembalians' => Pengembalian::latest()->where('id_user', Auth::user()->id)->get(),
         ]);
     }
 
@@ -45,7 +47,8 @@ class PengembalianController extends Controller
         [
             'title' => 'Create Pengembalian',
             'sanksis' => Sanksi::all(),
-            'peminjamans' => Peminjaman::all()
+            'peminjamans' => Peminjaman::all(),
+            'anggotas' => User::where('is_petugas', 0)->get(),
         ]);
     }
 
@@ -58,17 +61,24 @@ class PengembalianController extends Controller
     public function store(Request $request)
     {
         $validateData = $request->validate([
-            'id_peminjaman' => 'required|unique:pengembalians',
-            'id_sanksi' => 'nullable'
+            'id_peminjaman' => 'required',
+            'id_sanksi' => 'nullable',
+            'id_user' => 'required'
         ]);
 
+        $validateData['tanggal'] = Carbon::now()->toDateString();
         $validateData['id_petugas'] = Auth::user()->id;
 
-        $cekPeminjaman = Peminjaman::where('id', $request->id_peminjaman)->get();
-        if(count($cekPeminjaman) == 0) {
-            return redirect('dashboard/pengembalian/all')->with('error', 'Peminjaman tidak ditemukan');
+        $cekUser = Peminjaman::where('id', $request->id_peminjaman)->where('id_user', $request->id_user)->get();
+        if(count($cekUser) == 0) {
+            return redirect('dashboard/pengembalian/all')->with('error', 'User tidak meminjaman buku tersebut');
         }
         
+        $cekPeminjaman = Peminjaman::where('id', $request->id_peminjaman)->get();
+        if(count($cekPeminjaman) == 0) {
+            return redirect('dashboard/pengembalian/all')->with('error', ' Peminjaman tidak ditemukan');
+        }
+
         $cekSanksi = Sanksi::where('id', $request->id_sanksi)->get();
         if(count($cekSanksi) == 0) {
             return redirect('dashboard/pengembalian/all')->with('error', 'Sanksi tidak valid');
@@ -101,7 +111,8 @@ class PengembalianController extends Controller
         [
             'title' => "Edit Pengembalian",
             'pengembalian' => $pengembalian,
-            'peminjamans' => Peminjaman::all(),
+            'bukus' => Buku::all(),
+            'anggotas' => User::all(),
             'sanksis' => Sanksi::all()
         ]);
     }

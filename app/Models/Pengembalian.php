@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Peminjaman;
+use App\Models\Buku;
 use App\Models\User;
 use App\Models\Sanksi;
 
@@ -22,6 +22,11 @@ class Pengembalian extends Model
     public function peminjaman()
     {
         return $this->belongsTo(Peminjaman::class, 'id_peminjaman');
+    }
+
+    public function anggota()
+    {
+        return $this->belongsTo(User::class, 'id_user');
     }
 
     public function petugas()

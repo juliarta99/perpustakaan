@@ -27,6 +27,8 @@ Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/login', [UserController::class, 'index'])->middleware('guest')->name('login');
 Route::post('/login', [UserController::class, 'authenticate'])->middleware('guest')->name('login');
 Route::get('/logout', [UserController::class, 'logout'])->name('logout');
+// show buku
+Route::get('/pinjam/{buku:id}', [HomeController::class, 'pinjam']);
 // peminjaman & pengembalian (user)
 Route::get('/peminjaman', [PeminjamanController::class, 'index'])->middleware('auth');
 Route::get('/pengembalian', [PengembalianController::class, 'index'])->middleware('auth');

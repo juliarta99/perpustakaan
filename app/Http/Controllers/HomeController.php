@@ -16,4 +16,13 @@ class HomeController extends Controller
             'allBuku' => Buku::all(),
         ]);
     }
+
+    public function pinjam(Buku $buku)
+    {
+        return view('pinjam', 
+        [
+            'title' => "Pinjam Buku $buku->judul",
+            'buku' => $buku
+        ]);
+    }
 }

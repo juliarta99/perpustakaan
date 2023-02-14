@@ -34,7 +34,7 @@
                         <p class="text-center text-sm lg:text-md">Kategori: {{ $buku->kategori->name }}</p>
                         <p class="text-center text-sm lg:text-md">Penulis: {{ $buku->penulis }}</p>
                         <div class="w-full flex items-center mt-2 justify-center">
-                            <a href="">
+                            <a href="/pinjam/{{ $buku->id }}">
                                 <button class="py-1 px-2 bg-blue-500 rounded-md">Pinjam</button>
                             </a>
                         </div>

@@ -15,7 +15,11 @@ class RakController extends Controller
      */
     public function index()
     {
-        //
+        return view('dashboard.rak.index',
+        [
+            'title' => 'All Rak',
+            'raks' => Rak::all()
+        ]);
     }
 
     /**

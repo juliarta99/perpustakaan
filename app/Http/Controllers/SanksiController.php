@@ -15,7 +15,11 @@ class SanksiController extends Controller
      */
     public function index()
     {
-        //
+        return view('dashboard.sanksi.index',
+        [
+            'title' => 'All Sanksi',
+            'sanksis' => Sanksi::all()
+        ]);
     }
 
     /**

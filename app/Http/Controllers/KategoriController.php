@@ -15,7 +15,11 @@ class KategoriController extends Controller
      */
     public function index()
     {
-        //
+        return view('dashboard.kategori.index',
+        [
+            'title' => 'All Kategori',
+            'kategoris' => Kategori::all()
+        ]);
     }
 
     /**

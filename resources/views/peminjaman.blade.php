@@ -7,6 +7,9 @@ use App\Models\Pengembalian;
     <div class="pt-24 px-5 w-full lg:w-3/4 xl:w-4/5 pb-10">
         <h1 class="text-md lg:text-xl font-bold">Peminjaman buku</h1>
         <p class="text-sm lg:text-md mb-4">Buku yang dipinjam</p>
+        @if (count($peminjamans) == 0 )
+                    <p class="text-sm lg:text-md">Belum ada peminjaman buku</p>
+        @else
         <table class="w-full">
             <thead>
                 <tr class="bg-blue-200 text-md uppercase">
@@ -18,6 +21,7 @@ use App\Models\Pengembalian;
                 </tr>
             </thead>
             <tbody class="">
+                
                 @foreach ($peminjamans as $peminjaman)
                     <tr class="text-sm even:bg-gray-200 text-center">
                         <td class="shadow-sm py-1">{{ $loop->iteration }}</td>
@@ -33,6 +37,7 @@ use App\Models\Pengembalian;
                 @endforeach
             </tbody>
         </table>
+        @endif
     </div>
 </div>
 @endsection

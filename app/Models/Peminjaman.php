@@ -6,7 +6,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Buku;
 use App\Models\User;
-use App\Models\Pengembalian;
 
 class Peminjaman extends Model
 {
@@ -18,7 +17,7 @@ class Peminjaman extends Model
     {
         return $this->hasOne(Pengembalian::class, 'id_peminjaman');
     }
-
+    
     public function buku()
     {
         return $this->belongsTo(Buku::class, 'id_buku');

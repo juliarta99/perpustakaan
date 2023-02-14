@@ -4,6 +4,9 @@
     <div class="pt-24 px-5 w-full lg:w-3/4 xl:w-4/5 pb-10">
         <h1 class="text-md lg:text-xl font-bold">Pengembalian buku</h1>
         <p class="text-sm lg:text-md mb-4">Buku yang sudah dikembalikan</p>
+        @if (count($pengembalians) == 0 )
+                    <p class="text-sm mt-2 lg:text-md">Belum ada pengembalian buku</p>
+        @else
         <table class="w-full">
             <thead>
                 <tr class="bg-blue-200 text-md uppercase">
@@ -15,22 +18,18 @@
                 </tr>
             </thead>
             <tbody class="">
-                @if (count($peminjamans->pengembalian) == 0 )
-                
-                @else
-                    
-                @foreach ($peminjamans as $peminjaman)
-                    <tr class="text-sm even:bg-gray-200 text-center">
-                        <td class="shadow-sm py-1">{{ $loop->iteration }}</td>
-                        <td class="shadow-sm py-1">{{ $peminjaman->pengembalian->tanggal }}</td>
-                        <td class="shadow-sm py-1" title="{{ $peminjaman->buku->judul }}">{{ $peminjaman->buku->kode }}</td>
-                        <td class="shadow-sm py-1">{{ $peminjaman->pengembalian->petugas->name }}</td>
-                        <td class="shadow-sm py-1" title="{{ $peminjaman->pengembalian->sanksi->denda }}">{{ $peminjaman->pengembalian->sanksi->name }}</td>
-                    </tr>
-                @endforeach
-                @endif
-            </tbody>
-        </table>
+                    @foreach ($pengembalians as $pengembalian)
+                        <tr class="text-sm even:bg-gray-200 text-center">
+                            <td class="shadow-sm py-1">{{ $loop->iteration }}</td>
+                            <td class="shadow-sm py-1">{{ $pengembalian->tanggal }}</td>
+                            <td class="shadow-sm py-1" title="{{ $pengembalian->peminjaman->buku->judul }}">{{ $pengembalian->peminjaman->buku->kode }}</td>
+                            <td class="shadow-sm py-1">{{ $pengembalian->petugas->name }}</td>
+                            <td class="shadow-sm py-1" title="{{ $pengembalian->sanksi->denda }}">{{ $pengembalian->sanksi->name }}</td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+            @endif
     </div>
 </div>
 @endsection
