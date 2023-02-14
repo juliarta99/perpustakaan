@@ -29,7 +29,10 @@ class SanksiController extends Controller
      */
     public function create()
     {
-        //
+        return view('dashboard.sanksi.create',
+        [
+            'title' => 'Create Sanksi'
+        ]);
     }
 
     /**
@@ -62,7 +65,11 @@ class SanksiController extends Controller
      */
     public function edit(Sanksi $sanksi)
     {
-        //
+        return view('dashboard.sanksi.edit',
+        [
+            'title' => "Edit $sanksi->name",
+            'sanksi' => $sanksi
+        ]);
     }
 
     /**
@@ -85,6 +92,7 @@ class SanksiController extends Controller
      */
     public function destroy(Sanksi $sanksi)
     {
-        //
+        Sanksi::destroy('id', $sanksi->id);
+        return redirect('/dasboard/sanksi')->with('succes', 'Sanksi berhasil dihapus');
     }
 }

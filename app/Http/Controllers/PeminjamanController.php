@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\Buku;
 use Carbon\Carbon;
+use App\Models\Pengembalian;
 
 class PeminjamanController extends Controller
 {
@@ -162,6 +163,11 @@ class PeminjamanController extends Controller
      */
     public function destroy(Peminjaman $peminjaman)
     {
+        $cekPeminjaman = Pengembalian::where('id_peminjaman', $peminjaman->id)->get();
+        foreach($cekPeminjaman as $pinjam) {
+            Pengembalian::destroy('id_peminjaman', $pinjam->id);
+        }
+        
         Peminjaman::destroy('id', $peminjaman->id);
         return redirect('/dashboard/peminjaman/all')->with('succes', 'Peminjaman berhasil dihapus');
     }

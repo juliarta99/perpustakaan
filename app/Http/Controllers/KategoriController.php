@@ -29,7 +29,10 @@ class KategoriController extends Controller
      */
     public function create()
     {
-        //
+        return view('dashboard.kategori.create',
+        [
+            'title' => 'Create Kategori'
+        ]);
     }
 
     /**
@@ -62,7 +65,10 @@ class KategoriController extends Controller
      */
     public function edit(Kategori $kategori)
     {
-        //
+        return view('dashboard.kategori.edit', [
+            'title' => "Edit $kategori->name",
+            'kategori' => $kategori
+        ]);
     }
 
     /**
@@ -85,6 +91,7 @@ class KategoriController extends Controller
      */
     public function destroy(Kategori $kategori)
     {
-        //
+        Kategori::destroy('id', $kategori->id);
+        return redirect('/dashbaord/kategori')->with('succes', 'Kategori berhasil dihapus');
     }
 }

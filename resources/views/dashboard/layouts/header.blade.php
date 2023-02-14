@@ -2,7 +2,7 @@
     <div class="w-full py-4 items-center px-5 flex justify-between">
         <h1 class="text-md md:text-lg mr-3 lg:text-xl xl:text-2xl font-semibold">Dashboard</h1>
         <form action="" class="w-full lg:w-1/2">
-            <div class="flex w-full rounded-md shadow-md">
+            <div class="flex w-full rounded-md shadow-md" autocomplete="off">
                 <input type="text" value="{{ request('search') }}" name="search" placeholder="Cari buku....." class="outline-0 rounded-l-md w-full py-1 px-4">
                 <button type="submit" class="bg-gray-200 rounded-r-md px-2 text-sm lg:text-md">Cari</button>
             </div>

@@ -61,7 +61,7 @@ class PengembalianController extends Controller
     public function store(Request $request)
     {
         $validateData = $request->validate([
-            'id_peminjaman' => 'required',
+            'id_peminjaman' => 'required|unique:pengembalians',
             'id_sanksi' => 'nullable',
             'id_user' => 'required'
         ]);
@@ -111,7 +111,7 @@ class PengembalianController extends Controller
         [
             'title' => "Edit Pengembalian",
             'pengembalian' => $pengembalian,
-            'bukus' => Buku::all(),
+            'peminjamans' => Peminjaman::all(),
             'anggotas' => User::all(),
             'sanksis' => Sanksi::all()
         ]);
@@ -127,7 +127,8 @@ class PengembalianController extends Controller
     public function update(Request $request, Pengembalian $pengembalian)
     {
         $rules = [
-            'id_sanksi' => 'nullable'
+            'id_sanksi' => 'nullable',
+            'id_user' => 'required'
         ];
 
         if($request->id_peminjaman != $pengembalian->peminjaman->id) {

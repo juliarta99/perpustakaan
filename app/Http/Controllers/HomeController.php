@@ -12,7 +12,7 @@ class HomeController extends Controller
         return view('welcome', 
         [
             'title' => 'Perpustakaan',
-            'bukus' => Buku::latest()->with('kategori')->filter(request(['search']))->paginate(4),
+            'bukus' => Buku::latest()->with('kategori')->filter(request(['search']))->paginate(8),
             'allBuku' => Buku::all(),
         ]);
     }

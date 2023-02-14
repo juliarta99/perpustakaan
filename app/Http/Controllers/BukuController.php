@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Buku;
 use Illuminate\Http\Request;
 use App\Models\Kategori;
+use App\Models\Peminjaman;
+use App\Models\Pengembalian;
 use Illuminate\Support\Facades\Storage;
 
 class BukuController extends Controller
@@ -115,13 +117,14 @@ class BukuController extends Controller
 
         $validateData = $request->validate($rules);
 
+        
         if($request->file('sampul')) {
             if($request->oldSampul) {
                 Storage::delete($request->oldSampul);
             }
             $validateData['sampul'] = $request->file('sampul')->store('buku-images');
         }
-
+        
         Buku::where('id', $buku->id)->update($validateData);
         return redirect('/dashboard/buku')->with('succes', 'Buku berhasil diedit');
     }
@@ -134,7 +137,20 @@ class BukuController extends Controller
      */
     public function destroy(Buku $buku)
     {
+        // hapus peminjaman dengan buku tersebut
+        $peminjaman = Peminjaman::where('id_buku', $buku->id)->get();
+        foreach($peminjaman as $pinjam) {
+            Peminjaman::destroy('id', $pinjam->id);
+            // hapus pengembalian
+            $pengembalian = Pengembalian::where('id_peminjaman', $pinjam->id)->get();
+        }
+        foreach($pengembalian as $kembali) {
+            Pengembalian::destroy('id', $kembali->id);
+        }
+
+        // hapus buku
         Buku::destroy('id', $buku->id);
+        // kurangi stok
         Kategori::where('id', $buku->kategori->id)->decrement('stok', 1);
         return redirect('/dashboard/buku')->with('succes', 'Buku berhasil dihapus');
     }

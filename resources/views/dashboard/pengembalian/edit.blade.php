@@ -7,14 +7,14 @@
                 @csrf
                 @method('put')
 
-                <label for="id_buku" class="text-sm mt-2 md:text-md">Buku</label>
-                <input type="text" list="listBuku" name="id_buku" id="id_buku" value="{{ old('id_buku', $pengembalian->buku->id) }}" class="w-full py-2 px-4 rounded-md bg-gray-100 @error('id_buku') border-2 border-red-500 solid @enderror">
-                <datalist id="listBuku">
-                    @foreach ($bukus as $buku)
-                        <option value="{{ $buku->id }}">{{ $buku->kode }}/{{ $buku->name }}</option>
+                <label for="id_peminjaman" class="text-sm mt-2 md:text-md">Peminjaman</label>
+                <input type="text" list="listPeminjaman" name="id_peminjaman" id="id_peminjaman" value="{{ old('id_peminjaman', $pengembalian->peminjaman->id) }}" class="w-full py-2 px-4 rounded-md bg-gray-100 @error('id_peminjaman') border-2 border-red-500 solid @enderror">
+                <datalist id="listPeminjaman">
+                    @foreach ($peminjamans as $peminjaman)
+                        <option value="{{ $peminjaman->id }}">{{ $peminjaman->buku->kode }}/{{ $peminjaman->buku->judul }}</option>
                     @endforeach
                 </datalist>
-                @error('id_buku')
+                @error('id_peminjaman')
                     <div class="mb-3 text-sm text-red-500 lg:text-md">{{ $message }}</div>
                 @enderror
                 

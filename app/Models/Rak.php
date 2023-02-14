@@ -10,7 +10,7 @@ class Rak extends Model
 {
     use HasFactory;
 
-    protected $quarded = ['id'];
+    protected $guarded = ['id'];
 
     public function kategoris()
     {
