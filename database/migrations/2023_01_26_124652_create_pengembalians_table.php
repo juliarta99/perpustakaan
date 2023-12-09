@@ -16,9 +16,8 @@ return new class extends Migration
         Schema::create('pengembalians', function (Blueprint $table) {
             $table->id();
             $table->date('tanggal');
-            $table->foreignId('id_sanksi');
+            $table->foreignId('id_sanksi')->nullable();
             $table->foreignId('id_peminjaman');
-            $table->foreignId('id_user');
             $table->foreignId('id_petugas');
             $table->timestamps();
         });

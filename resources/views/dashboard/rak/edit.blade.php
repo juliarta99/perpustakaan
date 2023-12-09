@@ -13,7 +13,7 @@
                     <div class="mb-3 text-sm text-red-500 lg:text-md">{{ $message }}</div>
                 @enderror
 
-                <button type="submit" class="bg-gray-500 mt-3 py-2 px-4 rounded-md text-sm md:text-md">Tambah</button>
+                <button type="submit" class="bg-gray-500 mt-3 py-2 px-4 rounded-md text-sm md:text-md">Edit</button>
             </form>
         </div>
     </div>

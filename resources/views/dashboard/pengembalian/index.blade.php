@@ -32,9 +32,9 @@
                                 <td class="shadow-sm py-1">{{ $loop->iteration }}</td>
                                 <td class="shadow-sm py-1">{{ $pengembalian->tanggal }}</td>
                                 <td class="shadow-sm py-1" title="{{ $pengembalian->peminjaman->buku->judul }}">{{ $pengembalian->peminjaman->buku->kode }}</td>
-                                <td class="shadow-sm py-1">{{ $pengembalian->anggota->name}}</td>
+                                <td class="shadow-sm py-1">{{ $pengembalian->peminjaman->anggota->name}}</td>
                                 <td class="shadow-sm py-1">{{ $pengembalian->petugas->name }}</td>
-                                <td class="shadow-sm py-1" title="{{ $pengembalian->sanksi->denda }}">{{ $pengembalian->sanksi->name }}</td>
+                                <td class="shadow-sm py-1" title="{{ $pengembalian->sanksi ? $pengembalian->sanksi->denda : '' }}">{{  $pengembalian->sanksi ? $pengembalian->sanksi->name : '-' }}</td>
                                 <td class="shadow-sm py-1">
                                     <div class="flex items-center justify-center">
                                         <a href="/dashboard/pengembalian/{{ $pengembalian->id }}/edit" class="bg-yellow-500 mr-2 p-2 rounded-md">

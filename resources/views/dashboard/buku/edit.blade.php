@@ -32,6 +32,12 @@
                     <div class="mb-3 text-sm text-red-500 lg:text-md">{{ $message }}</div>
                 @enderror
 
+                <label for="stok" class="text-sm mt-2 md:text-md">Stok</label>
+                <input type="number" name="stok" id="stok" value="{{ old('stok', $buku->stok) }}" class="w-full py-2 px-4 rounded-md bg-gray-100 @error('stok') border-2 border-red-500 solid @enderror">
+                @error('stok')
+                    <div class="mb-3 text-sm text-red-500 lg:text-md">{{ $message }}</div>
+                @enderror
+
                 <label for="penulis" class="text-sm mt-2 md:text-md">Penulis</label>
                 <input type="text" name="penulis" id="penulis" value="{{ old('penulis', $buku->penulis) }}" class="w-full py-2 px-4 rounded-md bg-gray-100 @error('penulis') border-2 border-red-500 solid @enderror">
                 @error('penulis')

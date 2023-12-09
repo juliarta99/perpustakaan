@@ -8,8 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Sanksi extends Model
 {
     use HasFactory;
-
-    protected $quarded = ['id'];
+    protected $guarded = ['id'];
 
     public function pengembalians()
     {

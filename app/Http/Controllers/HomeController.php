@@ -12,8 +12,8 @@ class HomeController extends Controller
         return view('welcome', 
         [
             'title' => 'Perpustakaan',
-            'bukus' => Buku::latest()->with('kategori')->filter(request(['search']))->paginate(8),
-            'allBuku' => Buku::all(),
+            'bukus' => Buku::latest()->where('stok', '>', 0)->with('kategori')->filter(request(['search']))->paginate(8),
+            'allBuku' => Buku::where('stok', '>', 0)->get(),
         ]);
     }
 

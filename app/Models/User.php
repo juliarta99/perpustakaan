@@ -41,11 +41,14 @@ class User extends Authenticatable
 
     public function peminjamans()
     {
-        return $this->hasMany(Peminjaman::class, 'id_anggota');
+        return $this->hasMany(Peminjaman::class, 'id_user');
     }
-
-    public function pengembalians()
+    public function petugasPeminjamans()
     {
-        return $this->hasMany(Pengembalian::class, 'id_anggota');
+        return $this->hasMany(Peminjaman::class, 'id_petugas');
+    }
+    public function petugasPengembalians()
+    {
+        return $this->hasMany(Peminjaman::class, 'id_petugas');
     }
 }

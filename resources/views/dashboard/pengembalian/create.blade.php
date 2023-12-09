@@ -16,17 +16,6 @@
                 @error('id_peminjaman')
                     <div class="mb-3 text-sm text-red-500 lg:text-md">{{ $message }}</div>
                 @enderror
-                
-                <label for="id_user" class="text-sm mt-2 md:text-md">Anggota</label>
-                <input type="text" list="listAnggota" name="id_user" id="id_user" value="{{ old('id_user') }}" class="w-full py-2 px-4 rounded-md bg-gray-100 @error('id_user') border-2 border-red-500 solid @enderror">
-                <datalist id="listAnggota">
-                    @foreach ($anggotas as $anggota)
-                        <option value="{{ $anggota->id }}">{{ $anggota->kode }}/{{ $anggota->name }}</option>
-                    @endforeach
-                </datalist>
-                @error('id_user')
-                    <div class="mb-3 text-sm text-red-500 lg:text-md">{{ $message }}</div>
-                @enderror
 
                 <label for="id_sanksi" class="text-sm mt-2 md:text-md">Sanksi</label>
                 <input type="text" list="listSanksi" name="id_sanksi" id="id_sanksi" value="{{ old('id_sanksi') }}" class="w-full py-2 px-4 rounded-md bg-gray-100 @error('id_sanksi') border-2 border-red-500 solid @enderror">

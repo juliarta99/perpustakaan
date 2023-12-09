@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->char('kode')->unique();
             $table->string('judul');
+            $table->bigInteger('stok')->default(0);
             $table->string('penulis');
             $table->string('penerbit');
             $table->char('tahun');

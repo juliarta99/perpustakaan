@@ -45,7 +45,7 @@ class PeminjamanController extends Controller
         return view('dashboard.peminjaman.create',
         [
             'title' => 'Create Peminjaman',
-            'bukus' => Buku::all(),
+            'bukus' => Buku::where('stok', '>', 0)->get(),
             'anggotas' => User::where('is_petugas', 0)->get()
         ]);
     }
@@ -76,10 +76,8 @@ class PeminjamanController extends Controller
             return redirect('dashboard/peminjaman/all')->with('error', 'Anggota tidak valid');
         };
 
-        $cekBuku = Peminjaman::where('id_buku', $request->id_buku)->get();
-        if(count($cekBuku) == 1) {
-            return redirect('dashboard/peminjaman/all')->with('error', 'Buku sudah dipinjam');
-        };
+        $buku = Buku::find($request->id_buku);
+        $buku->update(['stok' => $buku->stok - 1]);
 
         Peminjaman::create($validateData);
         return redirect('dashboard/peminjaman/all')->with('succes', 'Peminjaman berhasil ditambahkan');
@@ -109,7 +107,7 @@ class PeminjamanController extends Controller
         [
             'title' => 'Edit Peminjaman',
             'peminjaman' => $peminjaman,
-            'bukus' => Buku::all(),
+            'bukus' => Buku::where('stok', '>', 0)->get(),
             'anggotas' => User::where('is_petugas', 0)->get()
         ]);
     }
@@ -127,16 +125,15 @@ class PeminjamanController extends Controller
             'id_user' => 'required'
         ];
         
-        
-        $validateData = $request->validate($rules);
-        
         if($request->id_buku != $peminjaman->buku->id) {
-            $validateData['id_buku'] = 'required';
-            $cekBuku = Peminjaman::where('id_buku', $request->id_buku)->get();
-            if(count($cekBuku) == 1) {
-                return redirect('dashboard/peminjaman/all')->with('error', 'Buku sudah dipinjam');
-            };
+            $rules['id_buku'] = 'required';
+            $bukuSebelumnya = Buku::find($peminjaman->id_buku);
+            $bukuSebelumnya->update(['stok' => $bukuSebelumnya->stok + 1]);
+            
+            $buku = Buku::find($request->id_buku);
+            $buku->update(['stok' => $buku->stok - 1]);
         }
+        $validateData = $request->validate($rules);
 
         $validateData['tanggal'] = Carbon::now()->toDateString();
         $validateData['id_petugas'] = Auth::user()->id;
@@ -163,11 +160,9 @@ class PeminjamanController extends Controller
      */
     public function destroy(Peminjaman $peminjaman)
     {
-        $cekPeminjaman = Pengembalian::where('id_peminjaman', $peminjaman->id)->get();
-        foreach($cekPeminjaman as $pinjam) {
-            Pengembalian::destroy('id_peminjaman', $pinjam->id);
-        }
-        
+        $buku = Buku::find($peminjaman->id_buku);
+        $buku->update(['stok' => $buku->stok + 1]);
+
         Peminjaman::destroy('id', $peminjaman->id);
         return redirect('/dashboard/peminjaman/all')->with('succes', 'Peminjaman berhasil dihapus');
     }

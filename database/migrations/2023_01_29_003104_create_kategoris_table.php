@@ -15,9 +15,8 @@ return new class extends Migration
     {
         Schema::create('kategoris', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
+            $table->string('name');
             $table->char('kode')->unique();
-            $table->integer('stok')->default(0);
             $table->foreignId('id_rak');
             $table->timestamps();
         });

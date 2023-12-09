@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('sanksis', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->integer('denda');
+            $table->float('denda');
             $table->timestamps();
         });
     }

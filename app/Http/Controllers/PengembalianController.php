@@ -23,7 +23,9 @@ class PengembalianController extends Controller
         return view('pengembalian', 
         [
             'title' => 'Pengembalian',
-            'pengembalians' => Pengembalian::latest()->where('id_user', Auth::user()->id)->get(),
+            'pengembalians' => Pengembalian::latest()->whereHas('peminjaman', function($query){
+                $query->where('id_user', Auth::user()->id);
+            })->get(),
         ]);
     }
 
@@ -47,7 +49,7 @@ class PengembalianController extends Controller
         [
             'title' => 'Create Pengembalian',
             'sanksis' => Sanksi::all(),
-            'peminjamans' => Peminjaman::all(),
+            'peminjamans' => Peminjaman::doesntHave('pengembalian')->get(),
             'anggotas' => User::where('is_petugas', 0)->get(),
         ]);
     }
@@ -63,27 +65,25 @@ class PengembalianController extends Controller
         $validateData = $request->validate([
             'id_peminjaman' => 'required|unique:pengembalians',
             'id_sanksi' => 'nullable',
-            'id_user' => 'required'
         ]);
 
         $validateData['tanggal'] = Carbon::now()->toDateString();
         $validateData['id_petugas'] = Auth::user()->id;
-
-        $cekUser = Peminjaman::where('id', $request->id_peminjaman)->where('id_user', $request->id_user)->get();
-        if(count($cekUser) == 0) {
-            return redirect('dashboard/pengembalian/all')->with('error', 'User tidak meminjaman buku tersebut');
-        }
         
         $cekPeminjaman = Peminjaman::where('id', $request->id_peminjaman)->get();
         if(count($cekPeminjaman) == 0) {
             return redirect('dashboard/pengembalian/all')->with('error', ' Peminjaman tidak ditemukan');
         }
 
-        $cekSanksi = Sanksi::where('id', $request->id_sanksi)->get();
-        if(count($cekSanksi) == 0) {
-            return redirect('dashboard/pengembalian/all')->with('error', 'Sanksi tidak valid');
+        if($request->id_sanksi) {
+            $cekSanksi = Sanksi::where('id', $request->id_sanksi)->get();
+            if(count($cekSanksi) == 0) {
+                return redirect('dashboard/pengembalian/all')->with('error', 'Sanksi tidak valid');
+            }
         }
 
+        $buku = Buku::find($cekPeminjaman[0]->id_buku);
+        $buku->update(['stok' => $buku->stok + 1]);
         Pengembalian::create($validateData);
         return redirect('/dashboard/pengembalian/all')->with('succes', 'Buku berhasil dikembalikan');
     }
@@ -111,7 +111,7 @@ class PengembalianController extends Controller
         [
             'title' => "Edit Pengembalian",
             'pengembalian' => $pengembalian,
-            'peminjamans' => Peminjaman::all(),
+            'peminjamans' => Peminjaman::doesntHave('pengembalian')->get(),
             'anggotas' => User::all(),
             'sanksis' => Sanksi::all()
         ]);
@@ -128,7 +128,6 @@ class PengembalianController extends Controller
     {
         $rules = [
             'id_sanksi' => 'nullable',
-            'id_user' => 'required'
         ];
 
         if($request->id_peminjaman != $pengembalian->peminjaman->id) {
@@ -145,10 +144,20 @@ class PengembalianController extends Controller
         if(count($cekPeminjaman) == 0) {
             return redirect('dashboard/pengembalian/all')->with('error', 'Peminjaman tidak ditemukan');
         }
+
+        if($request->id_peminjaman != $pengembalian->peminjaman->id) {
+            $bukuSebelunya = Buku::find($pengembalian->peminjaman->id_buku);
+            $bukuSebelunya->update(['stok' => $bukuSebelunya->stok - 1]);
+
+            $buku = Buku::find($cekPeminjaman->id_buku);
+            $buku->update(['stok' => $buku->stok + 1]);
+        } 
         
-        $cekSanksi = Sanksi::where('id', $request->id_sanksi)->get();
-        if(count($cekSanksi) == 0) {
-            return redirect('dashboard/pengembalian/all')->with('error', 'Sanksi tidak valid');
+        if($request->id_sanksi) {
+            $cekSanksi = Sanksi::where('id', $request->id_sanksi)->get();
+            if(count($cekSanksi) == 0) {
+                return redirect('dashboard/pengembalian/all')->with('error', 'Sanksi tidak valid');
+            }
         }
 
         Pengembalian::where('id', $pengembalian->id)->update($validateData);
@@ -163,6 +172,9 @@ class PengembalianController extends Controller
      */
     public function destroy(Pengembalian $pengembalian)
     {
+        $buku = Buku::find($pengembalian->peminjaman->id_buku);
+        $buku->update(['stok' => $buku->stok - 1]);
+
         Pengembalian::destroy('id', $pengembalian->id);
         return redirect('/dashboard/pengembalian/all')->with('succes', 'Pengembalian berhasil dihapus');
     }

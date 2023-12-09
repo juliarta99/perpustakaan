@@ -23,12 +23,7 @@ class Pengembalian extends Model
     {
         return $this->belongsTo(Peminjaman::class, 'id_peminjaman');
     }
-
-    public function anggota()
-    {
-        return $this->belongsTo(User::class, 'id_user');
-    }
-
+    
     public function petugas()
     {
         return $this->belongsTo(User::class, 'id_petugas');

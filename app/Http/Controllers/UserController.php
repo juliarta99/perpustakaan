@@ -34,7 +34,7 @@ class UserController extends Controller
         if(Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            if(Auth::user()->is_petugas != 0) {
+            if(Auth::user()->is_petugas != 0 || Auth::user()->is_admin != 0) {
                 return redirect()->intended('/dashboard');
             } else {
                 return redirect()->intended('/');
@@ -77,9 +77,9 @@ class UserController extends Controller
             'kode' => 'required|unique:users',
             'name' => 'required|max:255',
             'jk' => 'required|max:1',
-            'jabatan' => 'required',
             'no_telp' => 'required',
             'alamat' => 'required',
+            'is_petugas' => 'nullable',
             'password' => ['required', Password::min(8)->numbers()->symbols() ],
         ]);
 
@@ -131,10 +131,14 @@ class UserController extends Controller
         $validateData = $request->validate([
             'name' => 'required|max:255',
             'jk' => 'required|max:1',
-            'jabatan' => 'required',
+            'is_petugas' => 'nullable',
             'no_telp' => 'required',
             'alamat' => 'required',
         ]);
+
+        if($request->is_petugas == null) {
+            $validateData['is_petugas'] = 0;
+        };
 
         User::where('id', $user->id)->update($validateData);
         return redirect('/dashboard/user/all')->with('succes', 'User berhasil diubah');

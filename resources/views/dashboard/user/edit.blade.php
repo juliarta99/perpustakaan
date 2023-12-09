@@ -50,9 +50,9 @@
                     @endif
 
 
-                    <label class="text-sm mt-2 md:text-md" for="jabatan">Jabatan</label>
-                    <input value="{{ old('jabatan', $user->jabatan) }}" class="w-full py-2 px-4 rounded-md bg-gray-100 @error('jabatan') border-2 border-red-500 solid @enderror" type="text" name="jabatan" id="jabatan">
-                    @error('jabatan')
+                    <label class="text-sm mt-2 md:text-md" for="is_petugas">Petugas</label>
+                    <input value="{{ old('is_petugas', '1') }}" class="w-full py-2 px-4 rounded-md bg-gray-100 @error('is_petugas') border-2 border-red-500 solid @enderror" type="checkbox" name="is_petugas" id="is_petugas" @checked($user->is_petugas)>
+                    @error('is_petugas')
                         <div class="mb-3 text-sm text-red-500 lg:text-md">{{ $message }}</div>
                     @enderror
                     

@@ -111,6 +111,6 @@ class RakController extends Controller
         }
 
         Rak::destroy('id', $rak->id);
-        return redirect('/dashbaord/rak')->with('succes', 'Rak berhasil dihapus');
+        return redirect('/dashboard/rak')->with('succes', 'Rak berhasil dihapus');
     }
 }

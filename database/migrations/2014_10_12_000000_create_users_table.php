@@ -18,7 +18,6 @@ return new class extends Migration
             $table->char('kode')->unique();
             $table->string('name');
             $table->char('jk');
-            $table->string('jabatan');
             $table->string('no_telp')->unique();
             $table->string('alamat');
             $table->string('password');

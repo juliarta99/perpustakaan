@@ -50,6 +50,7 @@ class BukuController extends Controller
         $validateData = $request->validate([
             'kode' => 'required|unique:bukus',
             'judul' => 'required',
+            'stok' => 'required',
             'penulis' => 'required',
             'penerbit' => 'required',
             'tahun' => 'required',
@@ -62,7 +63,6 @@ class BukuController extends Controller
         }
 
         Buku::create($validateData);
-        Kategori::where('id', $request->id_kategori)->increment('stok', 1);
         return redirect('/dashboard/buku')->with('succes', 'Buku berhasil ditambahkan');
     }
 
@@ -104,6 +104,7 @@ class BukuController extends Controller
     {
         $rules = [
             'judul' => 'required',
+            'stok' => 'required',
             'penulis' => 'required',
             'penerbit' => 'required',
             'tahun' => 'required',
@@ -137,21 +138,8 @@ class BukuController extends Controller
      */
     public function destroy(Buku $buku)
     {
-        // hapus peminjaman dengan buku tersebut
-        $peminjaman = Peminjaman::where('id_buku', $buku->id)->get();
-        foreach($peminjaman as $pinjam) {
-            Peminjaman::destroy('id', $pinjam->id);
-            // hapus pengembalian
-            $pengembalian = Pengembalian::where('id_peminjaman', $pinjam->id)->get();
-        }
-        foreach($pengembalian as $kembali) {
-            Pengembalian::destroy('id', $kembali->id);
-        }
-
         // hapus buku
         Buku::destroy('id', $buku->id);
-        // kurangi stok
-        Kategori::where('id', $buku->kategori->id)->decrement('stok', 1);
         return redirect('/dashboard/buku')->with('succes', 'Buku berhasil dihapus');
     }
 }

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Kategori;
 use App\Http\Requests\StoreKategoriRequest;
 use App\Http\Requests\UpdateKategoriRequest;
+use App\Models\Rak;
+use Illuminate\Http\Request;
 
 class KategoriController extends Controller
 {
@@ -31,7 +33,8 @@ class KategoriController extends Controller
     {
         return view('dashboard.kategori.create',
         [
-            'title' => 'Create Kategori'
+            'title' => 'Create Kategori',
+            'raks' => Rak::all()
         ]);
     }
 
@@ -41,9 +44,16 @@ class KategoriController extends Controller
      * @param  \App\Http\Requests\StoreKategoriRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreKategoriRequest $request)
+    public function store(Request $request)
     {
-        //
+        $validateData = $request->validate([
+            'name' => 'required',
+            'kode' => 'required|unique:kategoris',
+            'id_rak' => 'required',
+        ]);
+
+        Kategori::create($validateData);
+        return redirect('/dashboard/kategori')->with('succes', 'Kategori berhasil ditambahkan');
     }
 
     /**
@@ -67,7 +77,8 @@ class KategoriController extends Controller
     {
         return view('dashboard.kategori.edit', [
             'title' => "Edit $kategori->name",
-            'kategori' => $kategori
+            'kategori' => $kategori, 
+            'raks' => Rak::all()
         ]);
     }
 
@@ -78,9 +89,19 @@ class KategoriController extends Controller
      * @param  \App\Models\Kategori  $kategori
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateKategoriRequest $request, Kategori $kategori)
+    public function update(Request $request, Kategori $kategori)
     {
-        //
+        $rules = [
+            'name' => 'required',
+            'id_rak' => 'required',
+        ];
+        if($request->kode != $kategori->kode){
+            $rules['kode'] = 'required|unique:kategoris';
+        }
+        $validateData = $request->validate($rules);
+
+        Kategori::create($validateData);
+        return redirect('/dashboard/kategori')->with('succes', 'Kategori berhasil ditambahkan');
     }
 
     /**

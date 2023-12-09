@@ -28,11 +28,6 @@ class Buku extends Model
 
     public function peminjamans()
     {
-        return $this->hasMany(Peminjaman::class);
-    }
-
-    public function pengembalians()
-    {
-        return $this->hasMany(Pengembalian::class);
+        return $this->hasMany(Peminjaman::class, 'id_buku');
     }
 }

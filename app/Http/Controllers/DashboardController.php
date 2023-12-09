@@ -12,8 +12,8 @@ class DashboardController extends Controller
         return view('dashboard.index',
         [
             'title' => 'Dashboard Perpustakaan',
-            'bukus' => Buku::latest()->with('kategori')->filter(request(['search']))->paginate(4),
-            'allBuku' => Buku::all()
+            'bukus' => Buku::latest()->where('stok', '>', 0)->with('kategori')->filter(request(['search']))->paginate(4),
+            'allBuku' => Buku::where('stok', '>', 0)->get()
         ]);
     }
 }

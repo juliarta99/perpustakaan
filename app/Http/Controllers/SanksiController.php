@@ -3,8 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Sanksi;
-use App\Http\Requests\StoreSanksiRequest;
-use App\Http\Requests\UpdateSanksiRequest;
+use Illuminate\Http\Request;
 
 class SanksiController extends Controller
 {
@@ -41,9 +40,15 @@ class SanksiController extends Controller
      * @param  \App\Http\Requests\StoreSanksiRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreSanksiRequest $request)
+    public function store(Request $request)
     {
-        //
+        $validateData = $request->validate([
+            'name' => 'required',
+            'denda' => 'required',
+        ]);
+
+        Sanksi::create($validateData);
+        return redirect('/dashboard/sanksi')->with('succes', 'Sanksi berhasil ditambahkan');
     }
 
     /**
@@ -79,9 +84,15 @@ class SanksiController extends Controller
      * @param  \App\Models\Sanksi  $sanksi
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateSanksiRequest $request, Sanksi $sanksi)
+    public function update(Request $request, Sanksi $sanksi)
     {
-        //
+        $validateData = $request->validate([
+            'name' => 'required',
+            'denda' => 'required',
+        ]);
+
+        $sanksi->update($validateData);
+        return redirect('/dashboard/sanksi')->with('succes', 'Sanksi berhasil diedit');
     }
 
     /**

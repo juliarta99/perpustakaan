@@ -14,6 +14,6 @@ class Rak extends Model
 
     public function kategoris()
     {
-     return $this->hasMany(Kategori::class);   
+     return $this->hasMany(Kategori::class, 'id_rak');   
     }
 }
